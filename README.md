@@ -1,6 +1,14 @@
 **Table of contents**
 
-[[_ToC_]]
+- [Overview](#overview)
+- [Setup](#setup)
+  - [Requirements](#requirements)
+  - [Manual submodule update](#manual-submodule-update)
+- [Install](#install)
+  - [Using the provided script](#using-the-provided-script)
+  - [Manual installation](#manual-installation)
+- [Usage](#usage)
+  - [ASR Client](#asr-client)
 
 # ASR Client (Python)
 
