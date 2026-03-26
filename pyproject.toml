@@ -1,0 +1,73 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "asr-client"
+description = "Techmo ASR Client"
+readme = { file = "README.md", content-type = "text/markdown" }
+authors = [{ name = "Techmo sp. z o.o", email = "kontakt@techmo.pl" }]
+requires-python = ">=3.8"
+dynamic = ["version"]
+dependencies = [
+    "grpcio>=1.63.0,<1.71.0; python_version=='3.8'",
+    "grpcio>=1.63.0; python_version>='3.9'",
+    "protobuf>=5.26.0,<6",
+    "pyaudio>=0.2.12",
+    "pydub>=0.25.1",
+    "audioop-lts>=0.2.2; python_version>='3.13'",
+    "techmo-asr-api",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+]
+
+[project.scripts]
+asr-client = "asr_client.__main__:main"
+
+[project.urls]
+repository = "https://github.com/techmo-pl/asr-client-python"
+
+[tool.setuptools.dynamic]
+version = { attr = "asr_client.VERSION.__version__" }
+
+[tool.setuptools.packages.find]
+include = ["asr_client*"]
+
+[tool.uv.sources]
+techmo-asr-api = { path = "submodules/asr-api-python", editable = true }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = ["--strict-markers"]
+
+[tool.coverage.run]
+source_pkgs = ["asr_client"]
+relative_files = true
+
+[tool.coverage.report]
+precision = 1
+show_missing = true
+
+# Pre-existing mypy issues are tracked per-module below.
+# New code should be written with full strict compliance.
+[[tool.mypy.overrides]]
+module = [
+    "asr_client.__main__",
+    "asr_client.audio_processing",
+    "asr_client.dictation",
+    "asr_client.v1",
+]
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = ["asr_client"]
+disallow_untyped_defs = false
+
+[[tool.mypy.overrides]]
+module = ["tests.*"]
+disallow_untyped_decorators = false
+disallow_untyped_calls = false

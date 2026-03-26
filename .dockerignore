@@ -1,0 +1,9 @@
+pre-commit/
+build/
+**/*.egg-info/
+**/.eggs/
+google/
+**/__pycache__/
+techmo/
+**/.venv/
+**/.vscode/

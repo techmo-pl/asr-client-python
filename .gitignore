@@ -1,0 +1,13 @@
+pre-commit/
+build/
+*.egg-info/
+.eggs/
+__pycache__/
+requirements.txt
+.venv/
+.vscode/
+**/asr_client_flag_info.txt
+**/asr_client.egg-info/
+# ignore wav files by default; use `git add --force` for any intentional test fixtures
+**/*.wav
+**/jm_client_setup.sh
