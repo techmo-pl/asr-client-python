@@ -40,7 +40,7 @@ However, with this approach the service treats each audio file as coming from a 
 
 Example:
 
-```bash,
+```bash
 python -m asr_client -s 0.0.0.0:30384 -a ./audio/*.wav --session-id "$(whoami)'s session"
 ```
 
