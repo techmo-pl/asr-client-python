@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**asr-client-python** is a gRPC client library and CLI tool for the Techmo ASR (Automatic Speech Recognition) Service. It wraps the `asr-api-python` Python bindings (from `submodules/asr-api-python`) into a user-facing package with:
+**asr-client-python** is a gRPC client library and CLI tool for the Techmo ASR (Automatic Speech Recognition) Service. It wraps the `asr-api-python` Python bindings (from `techmo-asr-api` on GitHub) into a user-facing package with:
 - A Python API (`asr_client` package)
 - A CLI tool (`asr-client` entry point → `asr_client.__main__:main`)
 
@@ -13,11 +13,11 @@ Current version: see `asr_client/VERSION.py` (`__version__` attribute).
 ## Repository Setup (run once after cloning)
 
 ```bash
-./setup.sh    # Sync git submodules
+./setup.sh    # Install pre-commit hooks
 ./install.sh  # Create .venv + install package with test extras
 ```
 
-- `setup.sh` — submodule sync/init only (`git submodule sync/update --init --recursive`).
+- `setup.sh` — clones the `techmo-pl/pre-commit` tooling from GitHub and installs hooks.
 - `install.sh` — creates `.venv` via `uv`, runs `uv pip install -e ".[test]"`. Accepts an optional `VENV_PATH` argument (default: `.venv`). Checks upfront for `uv`, `gcc`, Python headers, and PortAudio headers — fails with a clear message if any are missing.
 
 ---
@@ -51,20 +51,17 @@ asr_client/
 
 ## gRPC / Protobuf Rules
 
-- Generated protobuf files (`*_pb2.py`, `*_pb2_grpc.py`) come from `submodules/asr-api-python` and are produced at install time — never commit them.
-- All gRPC stubs are imported via `from asr_api import v1, v1p1, dictation`. The `asr_api` package is installed from the submodule under the name `techmo-asr-api` (see `[tool.uv.sources]` in `pyproject.toml`), not from PyPI.
-- If `asr_api` imports fail after cloning, run `./setup.sh` then `./install.sh`.
-- `tox.ini` installs the submodule directly as a dep: `deps = -e {toxinidir}/submodules/asr-api-python`.
+- Generated protobuf files (`*_pb2.py`, `*_pb2_grpc.py`) are produced at install time — never commit them.
+- All gRPC stubs are imported via `from asr_api import v1, v1p1, dictation`. The `asr_api` package is installed from `techmo-asr-api @ git+https://github.com/techmo-pl/asr-api-python.git@1.1.4` (declared in `pyproject.toml` dependencies).
+- If `asr_api` imports fail after cloning, run `./install.sh`.
 
 ---
 
-## Key Submodule
+## Key Dependency
 
-| Path | Purpose |
-|------|---------|
-| `submodules/asr-api-python/` | gRPC stubs for all ASR API versions (the `asr_api` package) |
-
-Run `./setup.sh` after any commit that changes `.gitmodules`.
+| Package | Source |
+|---------|--------|
+| `techmo-asr-api` | `git+https://github.com/techmo-pl/asr-api-python.git@1.1.4` — gRPC stubs for all ASR API versions (the `asr_api` Python package) |
 
 ---
 
@@ -87,7 +84,7 @@ apt install python3-dev portaudio19-dev build-essential
 | `audioop-lts` | `audioop` removed from stdlib in Python 3.13; conditional dep for `python_version >= '3.13'` |
 | `pydub` | Emits `SyntaxWarning` on Python 3.14 during import; suppressed with `warnings.catch_warnings()` in `audio_processing.py` — do not remove or move that guard |
 | `grpcio` | Pinned `<1.71.0` for Python 3.8 only; unpinned on 3.9+ |
-| `techmo-asr-api` | Local package from submodule, not on PyPI |
+| `techmo-asr-api` | Installed from `git+https://github.com/techmo-pl/asr-api-python.git@1.1.4` |
 
 **gRPC 4 MB message limit:** Default max incoming message size is 4 MB. Sending a file larger than ~4 MB as a single chunk will fail with `StatusCode.RESOURCE_EXHAUSTED`. Use `--audio-stream-chunk-duration` for large files.
 
