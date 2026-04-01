@@ -3,10 +3,8 @@ FROM python:3.8-slim-bullseye as build-stage
 ARG DEBIAN_FRONTEND=noninteractive
 ENV PIP_ROOT_USER_ACTION=ignore
 
-COPY submodules/asr-api-python /asr-client-python/submodules/asr-api-python/
 COPY asr_client /asr-client-python/asr_client/
-COPY pyproject.toml .gitmodules /asr-client-python/
-COPY .git /asr-client-python/.git
+COPY pyproject.toml /asr-client-python/
 
 WORKDIR /asr-client-python
 
@@ -26,7 +24,6 @@ RUN apt-get update \
 
 # hadolint ignore=DL3013
 RUN pip install --upgrade --no-cache-dir pip \
-    && pip install --no-cache-dir ./submodules/asr-api-python \
     && pip install --no-cache-dir .
 
 
@@ -46,9 +43,6 @@ RUN apt-get update \
 
 COPY --from=build-stage /usr/local/lib/python3.8/site-packages /usr/local/lib/python3.8/site-packages
 COPY --from=build-stage /asr-client-python/asr_client/ /asr-client-python/asr_client/
-COPY --from=build-stage /asr-client-python/submodules/asr-api-python/asr_api /asr-client-python/submodules/asr-api-python/asr_api
-COPY --from=build-stage /asr-client-python/submodules/asr-api-python/techmo /asr-client-python/submodules/asr-api-python/techmo
-COPY --from=build-stage /asr-client-python/submodules/asr-api-python/google /asr-client-python/submodules/asr-api-python/google
 
 WORKDIR /asr-client-python
 
