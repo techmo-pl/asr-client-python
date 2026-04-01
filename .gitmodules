@@ -1,3 +1,0 @@
-[submodule "submodules/asr-api-python"]
-	path = submodules/asr-api-python
-	url = https://github.com/techmo-pl/asr-api-python.git

@@ -16,7 +16,7 @@ dependencies = [
     "pyaudio>=0.2.12",
     "pydub>=0.25.1",
     "audioop-lts>=0.2.2; python_version>='3.13'",
-    "techmo-asr-api",
+    "techmo-asr-api @ git+https://github.com/techmo-pl/asr-api-python.git@1.1.4",
 ]
 
 [project.optional-dependencies]
@@ -36,9 +36,6 @@ version = { attr = "asr_client.VERSION.__version__" }
 
 [tool.setuptools.packages.find]
 include = ["asr_client*"]
-
-[tool.uv.sources]
-techmo-asr-api = { path = "submodules/asr-api-python", editable = true }
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
