@@ -6,7 +6,7 @@ Guidance for AI coding agents working in this repository.
 
 ## What this repo is
 
-A gRPC CLI client and Python library for the Techmo ASR (Automatic Speech Recognition) Service. Entry point: `asr_client.__main__:main` (installed as `asr-client`). The gRPC stubs come from a Git submodule (`submodules/asr-api-python`) and are generated at install time — they are never committed.
+A gRPC CLI client and Python library for the Techmo ASR (Automatic Speech Recognition) Service. Entry point: `asr_client.__main__:main` (installed as `asr-client`). The gRPC stubs come from `techmo-asr-api` (fetched from `github.com/techmo-pl/asr-api-python` at install time) and are generated at install time — they are never committed.
 
 ---
 
@@ -15,7 +15,6 @@ A gRPC CLI client and Python library for the Techmo ASR (Automatic Speech Recogn
 Run once after cloning:
 
 ```bash
-./setup.sh    # initialise submodules
 ./install.sh  # create .venv and install package + test deps
 ```
 
@@ -25,7 +24,7 @@ Run once after cloning:
 apt install python3-dev portaudio19-dev build-essential
 ```
 
-If `from asr_api import ...` fails, the submodule is not initialised. Run `./setup.sh` then `./install.sh`.
+If `from asr_api import ...` fails, re-run `./install.sh` (it fetches `techmo-asr-api` from GitHub automatically).
 
 ---
 
@@ -65,7 +64,7 @@ asr_client/
 └── VERSION.py           # __version__ string
 ```
 
-The `asr_api` package (gRPC stubs) is installed from `submodules/asr-api-python` under the name `techmo-asr-api`. It is not on PyPI.
+The `asr_api` package (gRPC stubs) is installed as `techmo-asr-api @ git+https://github.com/techmo-pl/asr-api-python.git@1.1.4` — fetched from GitHub at install time, not from PyPI.
 
 ---
 
